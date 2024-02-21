@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const User = require("./models/user");
 const sequelize = require("./database/connection");
+const CSIInformation = require("./models/csiInformation");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,6 +23,23 @@ sequelize
   .catch((err) => {
     console.error("Unable to sync database:", err);
   });
+
+// Get and store CSI information
+app.post("/csi", async (req, res) => {
+  const { data } = req.body;
+  if (!data) {
+    return res.status(400).send("Please provide CSI data");
+  }
+
+  try {
+    // Assuming you have a model named CSIInformation
+    const csiEntry = await CSIInformation.create({ data });
+    res.status(201).json(csiEntry);
+  } catch (err) {
+    console.error("Error storing CSI information:", err);
+    res.status(500).send("Error storing CSI information");
+  }
+});
 
 // Register a new user
 app.post("/register", async (req, res) => {
