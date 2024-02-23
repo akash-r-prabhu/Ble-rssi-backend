@@ -62,6 +62,29 @@ app.post("/csi", async (req, res) => {
   }
 });
 
+app.post("/retriveCsi", async (req, res) => {
+  try {
+    const csiData = await CSIInformation.findAll();
+    res.status(200).json(csiData);
+  } catch (err) {
+    console.error("Error retrieving CSI information:", err);
+    res.status(500).send("Error retrieving CSI information");
+  }
+});
+
+app.get("/deleteCsi", async (req, res) => {
+  try {
+    await CSIInformation.destroy({
+      where: {},
+      truncate: true,
+    });
+    res.status(200).send("Deleted all CSI data");
+  } catch (err) {
+    console.error("Error deleting CSI information:", err);
+    res.status(500).send("Error deleting CSI information");
+  }
+});
+
 // Register a new user
 app.post("/register", async (req, res) => {
   const { username, password, role, verifierUsername } = req.body;
