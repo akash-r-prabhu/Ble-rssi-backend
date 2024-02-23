@@ -25,8 +25,29 @@ sequelize
   });
 
 // Get and store CSI information
+// app.post("/csi", async (req, res) => {
+//   const { data } = req.body;
+//   if (!data) {
+//     return res.status(400).send("Please provide CSI data");
+//   }
+
+//   try {
+//     // Assuming you have a model named CSIInformation
+//     const csiEntry = await CSIInformation.create({ data });
+//     res.status(201).json(csiEntry);
+//   } catch (err) {
+//     console.error("Error storing CSI information:", err);
+//     res.status(500).send("Error storing CSI information");
+//   }
+// });
 app.post("/csi", async (req, res) => {
-  const { data } = req.body;
+  const { channelNo, sequenceNo, rssi, recId } = req.body;
+  data = {
+    channelNo: channelNo,
+    sequenceNo: sequenceNo,
+    rssi: rssi,
+    recId: recId,
+  };
   if (!data) {
     return res.status(400).send("Please provide CSI data");
   }
